@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="es" data-theme="light" data-accent="azul">
+<head>
+  <meta charset="utf-8">
+  <title>Banco Académico | Sistema Bancario</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f3f5f7">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script>
+    // Aplica el tema guardado antes de pintar para evitar parpadeos.
+    (function () {
+      try {
+        var c = JSON.parse(localStorage.getItem('sb_tema') || '{}');
+        var h = new Date().getHours(), d = c.darkFrom == null ? 19 : c.darkFrom, u = c.darkTo == null ? 6 : c.darkTo;
+        var noche = d > u ? (h >= d || h < u) : (h >= d && h < u);
+        var dark = c.mode === 'oscuro' || ((c.mode || 'auto') === 'auto' && noche);
+        var r = document.documentElement;
+        r.setAttribute('data-theme', dark ? 'dark' : 'light');
+        r.setAttribute('data-accent', c.accent || 'azul');
+      } catch (e) {}
+    })();
+  </script>
+</head>
+<body>
+  <app-root></app-root>
+</body>
+</html>
