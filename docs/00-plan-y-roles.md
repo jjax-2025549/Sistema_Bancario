@@ -5,21 +5,17 @@
 | Institución | Fundación Kinal |
 | Curso / Área | Taller 2 |
 | Grado y sección | Informática 5to, sección IN5CM |
-| Docente | [completar nombre del docente] |
+| Docente | Eduardo Hor |
 | Fecha de inicio | 25/09/2026 |
 | Fecha de entrega | 04/10/2026 (día 10: entrega final y defensa) |
-| Repositorio | https://github.com/jjax-205549/Sistema_Bancario |
+| Repositorio | https://github.com/jjax-2025549/Sistema_Bancario |
 | Rama de trabajo | `ft-jjax-2025549` → `develop` → `main` |
 
 ## Integrantes y roles
 
 | Integrante | Carné | Rol |
 |---|---|---|
-| Julian Eligio Jax Cisneros | 2025549 | [completar rol: Líder / Analista / Frontend / Backend / BD-QA] |
-| [completar integrante] | [carné] | [rol] |
-| [completar integrante] | [carné] | [rol] |
-
-> Equipos de 3 a 5 estudiantes. Todos deben participar y poder explicar el proyecto.
+| Julian Eligio Jax Cisneros | 2025549 | rol: Líder / Analista / Frontend / Backend / BD-QA |
 
 ## Cronograma de 10 días
 

@@ -28,7 +28,7 @@ Sistema bancario **educativo** (solo datos ficticios) que gestiona clientes, cue
 ## Instalación y ejecución (VS Code)
 ```bash
 # 1) Clonar y entrar
-git clone https://github.com/jjax-205549/Sistema_Bancario.git
+git clone https://github.com/jjax-2025549/Sistema_Bancario.git
 cd Sistema_Bancario
 
 # 2) Backend: dependencias y variables de entorno
