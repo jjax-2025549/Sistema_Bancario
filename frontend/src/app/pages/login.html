@@ -1,0 +1,29 @@
+<div class="login-wrap">
+  <section class="login-art">
+    <h1>Sistema bancario académico</h1>
+    <p>Clientes, cuentas y operaciones simuladas. Todo el contenido es ficticio y con fines educativos.</p>
+  </section>
+  <section class="login-box">
+    <div class="theme-pos"><app-theme-selector /></div>
+    <div>
+      <h1>Iniciar sesión</h1>
+      <p class="muted">Ingresa con una credencial ficticia.</p>
+    </div>
+    <form #f="ngForm" (ngSubmit)="entrar()" class="grid">
+      <div class="field">
+        <label for="usuario">Usuario</label>
+        <input id="usuario" name="username" [(ngModel)]="username" required autocomplete="username" />
+      </div>
+      <div class="field">
+        <label for="clave">Contraseña</label>
+        <input id="clave" name="password" type="password" [(ngModel)]="password" required autocomplete="current-password" />
+      </div>
+      @if (error()) { <div class="alert error" role="alert">{{ error() }}</div> }
+      <button class="btn" type="submit" [disabled]="f.invalid || cargando()">{{ cargando() ? 'Ingresando…' : 'Ingresar' }}</button>
+    </form>
+    <div class="creds">
+      Credenciales ficticias de prueba:<br />
+      <b>admin</b> / Admin123 &nbsp;·&nbsp; <b>cajero1</b> / Cajero123
+    </div>
+  </section>
+</div>
