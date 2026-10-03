@@ -1,0 +1,16 @@
+Evidencia de pruebas automatizadas - Sistema Bancario
+Fecha de ejecucion: 2026-09-29 22:02
+Comando: pnpm test:api (backend)
+
+✅ P002 Login inválido -> HTTP 401: Credenciales inválidas.
+✅ P001 Login válido -> HTTP 200
+✅ P003 Registrar cliente -> HTTP 201 id=4
+✅ P004 Crear cuenta -> cuenta 100-93770541 -> cliente 4
+✅ P005 Depósito válido -> saldo=150
+✅ P006 Retiro con saldo suficiente -> saldo=120
+✅ P007 Retiro superior al saldo -> HTTP 422: Saldo insuficiente: el retiro supera el saldo disponible.
+✅ P008 Transferencia válida -> origen=100 destino=20
+✅ P009 Transferencia a misma cuenta -> HTTP 422: No se permite transferir hacia la misma cuenta.
+✅ P010 Cuenta inactiva -> depósito 409, retiro 409, transferencia 409
+
+Resumen: 10/10 pruebas aprobadas.

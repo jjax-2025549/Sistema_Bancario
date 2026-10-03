@@ -1,0 +1,60 @@
+<div class="page-head">
+  <div>
+    <h1>Resumen de operaciones</h1>
+    <p>Vista general del sistema bancario simulado.</p>
+  </div>
+</div>
+
+@if (error()) { <div class="alert error">{{ error() }}</div> }
+
+@if (datos(); as d) {
+  <section class="grid kpis" aria-label="Indicadores">
+    <div class="card kpi principal"><span>Saldo total en cuentas activas</span><strong>{{ d.totales.saldo_total | currency: 'GTQ' : 'symbol-narrow' }}</strong></div>
+    <div class="card kpi"><span>Clientes activos</span><strong>{{ d.totales.clientes_activos }}</strong></div>
+    <div class="card kpi"><span>Cuentas activas</span><strong>{{ d.totales.cuentas_activas }}</strong></div>
+    <div class="card kpi"><span>Movimientos registrados</span><strong>{{ d.totales.total_movimientos }}</strong></div>
+  </section>
+
+  <section class="grid two">
+    <div class="card">
+      <h2>Monto por tipo de operación</h2>
+      @for (t of d.porTipo; track t.tipo) {
+        <div class="bar-row">
+          <span>{{ t.tipo | tipoMov }} ({{ t.cantidad }})</span>
+          <div class="bar"><i [style.width]="ancho(t.monto_total, montos(d))"></i></div>
+          <span class="num">{{ t.monto_total | currency: 'GTQ' : 'symbol-narrow' }}</span>
+        </div>
+      } @empty { <p class="empty">Aún no hay operaciones.</p> }
+    </div>
+
+    <div class="card">
+      <h2>Actividad de los últimos 7 días</h2>
+      @for (x of d.porDia; track x.dia) {
+        <div class="bar-row">
+          <span>{{ x.dia }}</span>
+          <div class="bar"><i [style.width]="ancho(x.operaciones, ops(d))"></i></div>
+          <span class="num">{{ x.operaciones }} op.</span>
+        </div>
+      } @empty { <p class="empty">Sin actividad reciente.</p> }
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Últimos movimientos</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Fecha</th><th>Cuenta</th><th>Tipo</th><th class="num">Monto</th></tr></thead>
+        <tbody>
+          @for (m of d.ultimos; track m.id) {
+            <tr>
+              <td>{{ m.fecha | date: 'dd/MM/yyyy HH:mm' }}</td>
+              <td>{{ m.cuenta }}</td>
+              <td>{{ m.tipo | tipoMov }}</td>
+              <td class="num">{{ m.monto | currency: 'GTQ' : 'symbol-narrow' }}</td>
+            </tr>
+          } @empty { <tr><td colspan="4" class="empty">Sin movimientos.</td></tr> }
+        </tbody>
+      </table>
+    </div>
+  </section>
+}

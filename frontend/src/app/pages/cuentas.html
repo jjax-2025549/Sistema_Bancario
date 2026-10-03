@@ -1,0 +1,67 @@
+<div class="page-head">
+  <div>
+    <h1>Cuentas</h1>
+    <p>Crea cuentas asociadas a un cliente, consulta saldos y cambia su estado.</p>
+  </div>
+  <button type="button" class="btn" (click)="mostrarForm.set(!mostrarForm())">Crear cuenta</button>
+</div>
+
+@if (aviso(); as a) { <div class="alert" [class.error]="a.tipo === 'error'" [class.success]="a.tipo === 'success'" role="status">{{ a.texto }}</div> }
+
+@if (mostrarForm()) {
+  <form class="card" #f="ngForm" (ngSubmit)="crear()">
+    <h2>Nueva cuenta</h2>
+    <div class="form-grid">
+      <div class="field">
+        <label for="cli">Cliente</label>
+        <select id="cli" name="cliente_id" [(ngModel)]="form.cliente_id" required>
+          <option [ngValue]="null" disabled>Selecciona un cliente</option>
+          @for (c of clientes(); track c.id) { <option [ngValue]="c.id">{{ c.nombre }} {{ c.apellido }} · {{ c.dpi }}</option> }
+        </select>
+      </div>
+      <div class="field">
+        <label for="tip">Tipo de cuenta</label>
+        <select id="tip" name="tipo_cuenta_id" [(ngModel)]="form.tipo_cuenta_id" required>
+          <option [ngValue]="null" disabled>Selecciona un tipo</option>
+          @for (t of tipos(); track t.id) { <option [ngValue]="t.id">{{ t.nombre }}</option> }
+        </select>
+      </div>
+      <div class="field">
+        <label for="ini">Saldo inicial (Q)</label>
+        <input id="ini" name="saldo_inicial" type="number" min="0" step="0.01" [(ngModel)]="form.saldo_inicial" required />
+      </div>
+    </div>
+    <div class="row" style="margin-top:16px">
+      <button type="submit" class="btn" [disabled]="f.invalid">Crear cuenta</button>
+      <button type="button" class="btn ghost" (click)="mostrarForm.set(false)">Cancelar</button>
+    </div>
+  </form>
+}
+
+<section class="card">
+  <div class="row" style="margin-bottom:14px">
+    <input style="max-width:340px" type="search" placeholder="Buscar por número, cliente o DPI" [(ngModel)]="q" (ngModelChange)="cargar()" aria-label="Buscar cuentas" />
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Número</th><th>Cliente</th><th>Tipo</th><th class="num">Saldo</th><th>Estado</th><th></th></tr></thead>
+      <tbody>
+        @for (c of lista(); track c.id) {
+          <tr>
+            <td>{{ c.numero }}</td>
+            <td>{{ c.cliente }}</td>
+            <td>{{ c.tipo }}</td>
+            <td class="num">{{ c.saldo | currency: 'GTQ' : 'symbol-narrow' }}</td>
+            <td><span class="badge" [class.ok]="c.estado === 'ACTIVA'" [class.off]="c.estado !== 'ACTIVA'">{{ c.estado === 'ACTIVA' ? 'Activa' : 'Inactiva' }}</span></td>
+            <td>
+              <div class="row" style="justify-content:flex-end">
+                <a class="btn ghost sm" style="text-decoration:none" routerLink="/movimientos" [queryParams]="{ cuenta: c.id }">Movimientos</a>
+                <button type="button" class="btn ghost sm" (click)="cambiarEstado(c)">{{ c.estado === 'ACTIVA' ? 'Desactivar' : 'Activar' }}</button>
+              </div>
+            </td>
+          </tr>
+        } @empty { <tr><td colspan="6" class="empty">No hay cuentas. Crea la primera con el botón superior.</td></tr> }
+      </tbody>
+    </table>
+  </div>
+</section>

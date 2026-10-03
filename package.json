@@ -1,0 +1,15 @@
+{
+  "name": "sistema-bancario",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Sistema bancario académico - Fundación Kinal - Taller 2 (datos ficticios)",
+  "scripts": {
+    "install:all": "pnpm --dir backend install && pnpm --dir frontend install",
+    "db:init": "pnpm --dir backend db:init",
+    "dev:back": "pnpm --dir backend dev",
+    "dev:front": "pnpm --dir frontend start",
+    "test:api": "pnpm --dir backend test:api",
+    "build": "pnpm --dir frontend build && pnpm --dir backend build",
+    "start": "pnpm --dir backend start"
+  }
+}
