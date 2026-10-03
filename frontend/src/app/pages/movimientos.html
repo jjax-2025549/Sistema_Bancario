@@ -1,0 +1,52 @@
+<div class="page-head">
+  <div>
+    <h1>Movimientos</h1>
+    <p>Historial de depósitos, retiros y transferencias.</p>
+  </div>
+</div>
+
+<section class="card">
+  <div class="form-grid" style="margin-bottom:14px">
+    <div class="field">
+      <label for="fc">Cuenta</label>
+      <select id="fc" [(ngModel)]="cuentaId" (ngModelChange)="buscar()">
+        <option [ngValue]="null">Todas las cuentas</option>
+        @for (c of cuentas(); track c.id) { <option [ngValue]="c.id">{{ c.numero }} · {{ c.cliente }}</option> }
+      </select>
+    </div>
+    <div class="field">
+      <label for="ft">Tipo</label>
+      <select id="ft" [(ngModel)]="tipo" (ngModelChange)="buscar()">
+        <option value="">Todos</option>
+        <option value="DEPOSITO">Depósito</option>
+        <option value="RETIRO">Retiro</option>
+        <option value="TRANSFERENCIA_ENVIADA">Transferencia enviada</option>
+        <option value="TRANSFERENCIA_RECIBIDA">Transferencia recibida</option>
+      </select>
+    </div>
+    <div class="field"><label for="fd">Desde</label><input id="fd" type="date" [(ngModel)]="desde" (ngModelChange)="buscar()" /></div>
+    <div class="field"><label for="fh">Hasta</label><input id="fh" type="date" [(ngModel)]="hasta" (ngModelChange)="buscar()" /></div>
+  </div>
+  <div class="row" style="margin-bottom:12px"><button type="button" class="btn ghost sm" (click)="limpiar()">Limpiar filtros</button></div>
+
+  @if (error()) { <div class="alert error">{{ error() }}</div> }
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Fecha</th><th>Cuenta</th><th>Tipo</th><th>Cuenta relacionada</th><th class="num">Monto</th><th class="num">Saldo resultante</th><th>Usuario</th></tr></thead>
+      <tbody>
+        @for (m of lista(); track m.id) {
+          <tr>
+            <td>{{ m.fecha | date: 'dd/MM/yyyy HH:mm' }}</td>
+            <td>{{ m.cuenta }}</td>
+            <td>{{ m.tipo | tipoMov }}</td>
+            <td>{{ m.cuenta_relacionada ?? '—' }}</td>
+            <td class="num" [class.mov-in]="entrada(m.tipo)" [class.mov-out]="!entrada(m.tipo)">{{ entrada(m.tipo) ? '+' : '−' }}{{ m.monto | currency: 'GTQ' : 'symbol-narrow' }}</td>
+            <td class="num">{{ m.saldo_resultante | currency: 'GTQ' : 'symbol-narrow' }}</td>
+            <td>{{ m.usuario }}</td>
+          </tr>
+        } @empty { <tr><td colspan="7" class="empty">No hay movimientos con estos filtros.</td></tr> }
+      </tbody>
+    </table>
+  </div>
+</section>

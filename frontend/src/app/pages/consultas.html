@@ -1,0 +1,60 @@
+<div class="page-head">
+  <div>
+    <h1>Consultas</h1>
+    <p>Busca clientes o cuentas y consulta su saldo y movimientos.</p>
+  </div>
+</div>
+
+<form class="card" (ngSubmit)="buscar()">
+  <div class="row">
+    <input style="max-width:420px" name="q" [(ngModel)]="q" placeholder="Nombre, DPI, correo o número de cuenta" aria-label="Buscar" />
+    <button type="submit" class="btn" [disabled]="!q.trim()">Buscar</button>
+  </div>
+</form>
+
+@if (error()) { <div class="alert error">{{ error() }}</div> }
+
+@if (buscado()) {
+  <section class="grid two">
+    <div class="card">
+      <h2>Clientes ({{ clientes().length }})</h2>
+      @for (c of clientes(); track c.id) {
+        <p style="padding:8px 0;border-bottom:1px solid var(--border)">
+          <b>{{ c.nombre }} {{ c.apellido }}</b> <span class="badge" [class.ok]="c.activo" [class.off]="!c.activo">{{ c.activo ? 'Activo' : 'Inactivo' }}</span><br />
+          <span class="muted">DPI {{ c.dpi }} · {{ c.email }}</span>
+        </p>
+      } @empty { <p class="empty">Sin clientes para “{{ q }}”.</p> }
+    </div>
+    <div class="card">
+      <h2>Cuentas ({{ cuentas().length }})</h2>
+      @for (c of cuentas(); track c.id) {
+        <p style="padding:8px 0;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;gap:8px;align-items:center">
+          <span><b>{{ c.numero }}</b> · {{ c.cliente }}<br /><span class="muted">{{ c.tipo }} · {{ c.saldo | currency: 'GTQ' : 'symbol-narrow' }}</span></span>
+          <button type="button" class="btn ghost sm" (click)="verCuenta(c.id)">Ver saldo y movimientos</button>
+        </p>
+      } @empty { <p class="empty">Sin cuentas para “{{ q }}”.</p> }
+    </div>
+  </section>
+}
+
+@if (detalle(); as d) {
+  <section class="card">
+    <h2>Cuenta {{ d.numero }}</h2>
+    <p style="margin:6px 0 14px">Saldo disponible: <b>{{ d.saldo | currency: 'GTQ' : 'symbol-narrow' }}</b> · Estado: <span class="badge" [class.ok]="d.estado === 'ACTIVA'" [class.off]="d.estado !== 'ACTIVA'">{{ d.estado === 'ACTIVA' ? 'Activa' : 'Inactiva' }}</span></p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Fecha</th><th>Tipo</th><th class="num">Monto</th><th class="num">Saldo resultante</th></tr></thead>
+        <tbody>
+          @for (m of d.movimientos; track m.id) {
+            <tr>
+              <td>{{ m.fecha | date: 'dd/MM/yyyy HH:mm' }}</td>
+              <td>{{ m.tipo | tipoMov }}</td>
+              <td class="num" [class.mov-in]="entrada(m.tipo)" [class.mov-out]="!entrada(m.tipo)">{{ entrada(m.tipo) ? '+' : '−' }}{{ m.monto | currency: 'GTQ' : 'symbol-narrow' }}</td>
+              <td class="num">{{ m.saldo_resultante | currency: 'GTQ' : 'symbol-narrow' }}</td>
+            </tr>
+          } @empty { <tr><td colspan="4" class="empty">Esta cuenta aún no tiene movimientos.</td></tr> }
+        </tbody>
+      </table>
+    </div>
+  </section>
+}

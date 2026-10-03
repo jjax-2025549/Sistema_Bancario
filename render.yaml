@@ -1,0 +1,28 @@
+# Despliegue en Render: un solo servicio web (el backend sirve el frontend compilado).
+# La base de datos MySQL debe estar en un proveedor externo (Render no ofrece MySQL gestionado).
+services:
+  - type: web
+    name: sistema-bancario
+    runtime: node
+    plan: free
+    branch: main
+    buildCommand: npm install -g pnpm && pnpm --dir frontend install --prod=false && pnpm --dir frontend build && pnpm --dir backend install --prod=false && pnpm --dir backend build
+    startCommand: pnpm --dir backend start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: 22
+      - key: DB_HOST
+        sync: false
+      - key: DB_PORT
+        value: 3306
+      - key: DB_USER
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
+      - key: DB_NAME
+        sync: false
+      - key: DB_SSL
+        value: "true"
+      - key: JWT_SECRET
+        generateValue: true

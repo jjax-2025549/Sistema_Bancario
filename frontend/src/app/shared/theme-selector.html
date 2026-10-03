@@ -1,0 +1,38 @@
+<div class="theme">
+  <button type="button" class="btn ghost sm" (click)="abierto.set(!abierto())" [attr.aria-expanded]="abierto()" aria-haspopup="dialog">
+    Apariencia: {{ theme.isDark() ? 'oscuro' : 'claro' }}
+  </button>
+  @if (abierto()) {
+    <div class="theme-panel" role="dialog" aria-label="Personalizar apariencia">
+      <h3>Modo</h3>
+      <div class="seg" role="group" aria-label="Modo de color">
+        @for (m of modos; track m.id) {
+          <button type="button" [class.on]="theme.mode() === m.id" [attr.aria-pressed]="theme.mode() === m.id" (click)="theme.setMode(m.id)">{{ m.label }}</button>
+        }
+      </div>
+      @if (theme.mode() === 'auto') {
+        <p class="hint">Automático: oscuro de {{ hh(theme.darkFrom()) }} a {{ hh(theme.darkTo()) }}. Ahora se muestra el tema {{ theme.isDark() ? 'oscuro' : 'claro' }}.</p>
+        <div class="hours">
+          <div>
+            <label for="desde">Oscuro desde</label>
+            <select id="desde" [ngModel]="theme.darkFrom()" (ngModelChange)="theme.setRango(+$event, theme.darkTo())">
+              @for (h of horas; track h) { <option [ngValue]="h">{{ hh(h) }}</option> }
+            </select>
+          </div>
+          <div>
+            <label for="hasta">Claro desde</label>
+            <select id="hasta" [ngModel]="theme.darkTo()" (ngModelChange)="theme.setRango(theme.darkFrom(), +$event)">
+              @for (h of horas; track h) { <option [ngValue]="h">{{ hh(h) }}</option> }
+            </select>
+          </div>
+        </div>
+      }
+      <h3>Color de acento</h3>
+      <div class="swatches" role="group" aria-label="Color de acento">
+        @for (a of theme.acentos; track a.id) {
+          <button type="button" [style.background]="a.color" [class.on]="theme.accent() === a.id" [title]="a.label" [attr.aria-label]="a.label" [attr.aria-pressed]="theme.accent() === a.id" (click)="theme.setAccent(a.id)"></button>
+        }
+      </div>
+    </div>
+  }
+</div>

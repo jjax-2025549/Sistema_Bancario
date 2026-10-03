@@ -1,0 +1,58 @@
+<div class="page-head">
+  <div>
+    <h1>Clientes</h1>
+    <p>Registra, consulta, modifica y desactiva clientes.</p>
+  </div>
+  <button type="button" class="btn" (click)="nuevo()">Registrar cliente</button>
+</div>
+
+@if (aviso(); as a) { <div class="alert" [class.error]="a.tipo === 'error'" [class.success]="a.tipo === 'success'" role="status">{{ a.texto }}</div> }
+
+@if (mostrarForm()) {
+  <form class="card" #f="ngForm" (ngSubmit)="guardar()">
+    <h2>{{ editId ? 'Modificar cliente' : 'Nuevo cliente' }}</h2>
+    <div class="form-grid">
+      <div class="field"><label for="nombre">Nombre</label><input id="nombre" name="nombre" [(ngModel)]="form.nombre" required minlength="2" maxlength="80" /></div>
+      <div class="field"><label for="apellido">Apellido</label><input id="apellido" name="apellido" [(ngModel)]="form.apellido" required minlength="2" maxlength="80" /></div>
+      <div class="field"><label for="dpi">DPI ficticio (13 dígitos)</label><input id="dpi" name="dpi" [(ngModel)]="form.dpi" required pattern="\d{13}" inputmode="numeric" maxlength="13" /></div>
+      <div class="field"><label for="email">Correo</label><input id="email" name="email" type="email" [(ngModel)]="form.email" required email /></div>
+      <div class="field"><label for="tel">Teléfono</label><input id="tel" name="telefono" [(ngModel)]="form.telefono" required pattern="\d{8,15}" inputmode="numeric" /></div>
+      <div class="field"><label for="dir">Dirección (opcional)</label><input id="dir" name="direccion" [(ngModel)]="form.direccion" maxlength="160" /></div>
+    </div>
+    <div class="row" style="margin-top:16px">
+      <button type="submit" class="btn" [disabled]="f.invalid || guardando">{{ editId ? 'Guardar cambios' : 'Registrar cliente' }}</button>
+      <button type="button" class="btn ghost" (click)="cancelar()">Cancelar</button>
+    </div>
+  </form>
+}
+
+<section class="card">
+  <div class="row" style="margin-bottom:14px">
+    <input style="max-width:320px" type="search" placeholder="Buscar por nombre, DPI o correo" [(ngModel)]="q" (ngModelChange)="cargar()" aria-label="Buscar clientes" />
+    <select style="max-width:180px" [(ngModel)]="filtroActivo" (ngModelChange)="cargar()" aria-label="Filtrar por estado">
+      <option value="">Todos</option><option value="1">Activos</option><option value="0">Inactivos</option>
+    </select>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Cliente</th><th>DPI</th><th>Correo</th><th>Teléfono</th><th>Estado</th><th></th></tr></thead>
+      <tbody>
+        @for (c of lista(); track c.id) {
+          <tr>
+            <td>{{ c.nombre }} {{ c.apellido }}</td>
+            <td>{{ c.dpi }}</td>
+            <td>{{ c.email }}</td>
+            <td>{{ c.telefono }}</td>
+            <td><span class="badge" [class.ok]="c.activo" [class.off]="!c.activo">{{ c.activo ? 'Activo' : 'Inactivo' }}</span></td>
+            <td class="num">
+              <div class="row" style="justify-content:flex-end">
+                <button type="button" class="btn ghost sm" (click)="editar(c)">Editar</button>
+                <button type="button" class="btn sm" [class.danger]="c.activo" [class.ghost]="!c.activo" (click)="cambiarEstado(c)">{{ c.activo ? 'Desactivar' : 'Activar' }}</button>
+              </div>
+            </td>
+          </tr>
+        } @empty { <tr><td colspan="6" class="empty">No hay clientes que coincidan. Registra uno nuevo con el botón superior.</td></tr> }
+      </tbody>
+    </table>
+  </div>
+</section>
