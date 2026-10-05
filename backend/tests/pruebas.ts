@@ -1,5 +1,5 @@
 /**
- * Pruebas obligatorias P001–P010 contra la API en ejecución.
+ * Pruebas P001–P010 (obligatorias) y P011–P015 (adicionales: roles y validaciones) contra la API en ejecución.
  * Uso:  (terminal 1) pnpm dev     (terminal 2) pnpm test:api
  * Requiere haber ejecutado antes:  pnpm db:init
  */
@@ -23,6 +23,7 @@ function registrar(id: string, prueba: string, esperado: string, ok: boolean, de
 
 async function main() {
   const sufijo = String(Date.now()).slice(-9);
+  const dpiPrueba = `2${sufijo}0000`.slice(0, 13).padEnd(13, '0');
 
   // P001 / P002 Login
   const bad = await api('POST', '/auth/login', { username: 'admin', password: 'incorrecta' }, false);
@@ -33,7 +34,7 @@ async function main() {
 
   // P003 Registrar cliente
   const cli = await api('POST', '/clientes', {
-    nombre: 'Prueba', apellido: 'Automatica', dpi: `2${sufijo}0000`.slice(0, 13).padEnd(13, '0'),
+    nombre: 'Prueba', apellido: 'Automatica', dpi: dpiPrueba,
     email: `prueba${sufijo}@ejemplo.test`, telefono: '50255550000', direccion: 'Zona 1',
   });
   const clienteId = cli.data?.datos?.id;
@@ -69,6 +70,22 @@ async function main() {
   const r3 = await api('POST', '/retiros', { cuenta_id: a, monto: 10 });
   const t3 = await api('POST', '/transferencias', { cuenta_origen_id: a, cuenta_destino_id: b, monto: 1 });
   registrar('P010', 'Cuenta inactiva', 'No permite operaciones', [d2, r3, t3].every((x) => x.status === 409), `depósito ${d2.status}, retiro ${r3.status}, transferencia ${t3.status}`);
+
+  // P011-P015: pruebas adicionales (control de acceso por rol y validaciones)
+  const tokenAdmin = token;
+  const lc = await api('POST', '/auth/login', { username: 'cajero1', password: 'Cajero123' }, false);
+  token = lc.data.token;
+  const des = await api('DELETE', `/clientes/${clienteId}`);
+  registrar('P011', 'Cajero intenta desactivar un cliente', 'Acceso denegado (403)', des.status === 403, `HTTP ${des.status}: ${des.data.mensaje}`);
+  const lista = await api('GET', '/clientes');
+  registrar('P012', 'Cajero consulta clientes', 'Permite la consulta (200)', lista.status === 200, `HTTP ${lista.status}`);
+  token = tokenAdmin;
+  const dep0 = await api('POST', '/depositos', { cuenta_id: b, monto: 0 });
+  registrar('P013', 'Depósito con monto cero', 'Operación rechazada (400)', dep0.status === 400, `HTTP ${dep0.status}: ${dep0.data.mensaje}`);
+  const dup = await api('POST', '/clientes', { nombre: 'Copia', apellido: 'Duplicada', dpi: dpiPrueba, email: `copia${sufijo}@ejemplo.test`, telefono: '50255550001' });
+  registrar('P014', 'Registrar cliente con DPI repetido', 'Operación rechazada (409)', dup.status === 409, `HTTP ${dup.status}: ${dup.data.mensaje}`);
+  const sin = await api('GET', '/cuentas', undefined, false);
+  registrar('P015', 'Consultar cuentas sin sesión', 'Acceso denegado (401)', sin.status === 401, `HTTP ${sin.status}: ${sin.data.mensaje}`);
 
   const fallos = resultados.filter((r) => !r.ok).length;
   console.log(`\nResumen: ${resultados.length - fallos}/${resultados.length} pruebas aprobadas.`);
