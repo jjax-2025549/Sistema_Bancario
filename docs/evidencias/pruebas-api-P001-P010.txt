@@ -1,16 +1,20 @@
 Evidencia de pruebas automatizadas - Sistema Bancario
-Fecha de ejecucion: 2026-09-29 22:02
+Fecha de ejecucion: 2026-10-05 23:32
 Comando: pnpm test:api (backend)
 
 ✅ P002 Login inválido -> HTTP 401: Credenciales inválidas.
 ✅ P001 Login válido -> HTTP 200
-✅ P003 Registrar cliente -> HTTP 201 id=4
-✅ P004 Crear cuenta -> cuenta 100-93770541 -> cliente 4
+✅ P003 Registrar cliente -> HTTP 201 id=6
+✅ P004 Crear cuenta -> cuenta 100-31785120 -> cliente 6
 ✅ P005 Depósito válido -> saldo=150
 ✅ P006 Retiro con saldo suficiente -> saldo=120
 ✅ P007 Retiro superior al saldo -> HTTP 422: Saldo insuficiente: el retiro supera el saldo disponible.
 ✅ P008 Transferencia válida -> origen=100 destino=20
 ✅ P009 Transferencia a misma cuenta -> HTTP 422: No se permite transferir hacia la misma cuenta.
 ✅ P010 Cuenta inactiva -> depósito 409, retiro 409, transferencia 409
-
-Resumen: 10/10 pruebas aprobadas.
+✅ P011 Cajero intenta desactivar un cliente -> HTTP 403: No tienes permisos para realizar esta acción.
+✅ P012 Cajero consulta clientes -> HTTP 200
+✅ P013 Depósito con monto cero -> HTTP 400: El monto debe ser mayor que cero.
+✅ P014 Registrar cliente con DPI repetido -> HTTP 409: Ya existe un registro con esos datos únicos (DPI, email o número).
+✅ P015 Consultar cuentas sin sesión -> HTTP 401: Acceso denegado: falta el token de sesión.
+Resumen: 15/15 pruebas aprobadas.

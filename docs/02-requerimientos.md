@@ -15,6 +15,8 @@
 | RF10 | Mostrar un reporte resumen de operaciones | Reportes |
 | RF11 | Validar campos obligatorios, datos válidos, saldos y reglas de negocio | Validaciones |
 | RF12 | Cambiar la apariencia: modo claro, oscuro, automático (según la hora) y color de acento | Interfaz |
+| RF13 | Control de acceso por rol: solo el administrador desactiva/activa clientes y cuentas | Autenticación |
+| RF14 | Exportar el historial de movimientos a CSV e imprimirlo | Movimientos |
 
 ## No funcionales
 | ID | Requerimiento |

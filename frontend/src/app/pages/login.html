@@ -43,6 +43,16 @@
           @if (cargando()) { <span class="spin" aria-hidden="true"></span> Ingresando… } @else { Ingresar }
         </button>
       </form>
+      <div class="creds">
+        <div class="creds-head"><span>Credenciales de prueba</span><small>Ficticias · toca para autocompletar</small></div>
+        @for (c of credenciales; track c.usuario) {
+          <button type="button" class="cred" (click)="usar(c)">
+            <span class="cred-rol">{{ c.rol }}</span>
+            <span class="cred-data"><b>{{ c.usuario }}</b><span class="muted"> · {{ c.clave }}</span></span>
+            <span class="cred-use">Usar</span>
+          </button>
+        }
+      </div>
       <p class="login-note">Entorno educativo · Datos ficticios</p>
     </div>
   </section>

@@ -35,3 +35,10 @@ Muestra saldo total, clientes y cuentas activas, monto por tipo de operación, a
 
 ## 8. Cerrar sesión
 Pulsa **Cerrar sesión** en la barra superior.
+
+## 9. Roles y permisos
+- **Administrador (`admin`)**: puede todo, incluido desactivar o activar clientes y cuentas.
+- **Cajero (`cajero1`)**: registra clientes, crea cuentas y realiza operaciones, pero no ve los botones de desactivar/activar (el servidor también lo rechaza).
+
+## 10. Exportar e imprimir movimientos
+En **Movimientos**, aplica los filtros que necesites y pulsa **Exportar CSV** (se descarga un archivo que abre Excel) o **Imprimir** (genera una vista limpia solo con la tabla).

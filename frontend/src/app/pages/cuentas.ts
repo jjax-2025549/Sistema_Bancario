@@ -2,6 +2,7 @@ import { CurrencyPipe } from '@angular/common';
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { AuthService } from '../core/auth.service';
 import { ApiService } from '../core/api.service';
 import { ToastService } from '../core/toast.service';
 import { Cliente, Cuenta, TipoCuenta, mensajeError } from '../core/models';
@@ -14,6 +15,7 @@ import { Cliente, Cuenta, TipoCuenta, mensajeError } from '../core/models';
 export class Cuentas implements OnInit {
   private api = inject(ApiService);
   private toast = inject(ToastService);
+  auth = inject(AuthService);
   lista = signal<Cuenta[]>([]);
   clientes = signal<Cliente[]>([]);
   tipos = signal<TipoCuenta[]>([]);

@@ -16,6 +16,18 @@ Ejecutadas con `pnpm test:api` (backend) el 29/09/2026. Evidencia completa: [`ev
 | P009 | Transferencia a misma cuenta | Operación rechazada | HTTP 422 | Aprobada |
 | P010 | Cuenta inactiva | No permite operaciones | Depósito, retiro y transferencia: HTTP 409 | Aprobada |
 
+### Pruebas adicionales (control de acceso y validaciones)
+
+| ID | Prueba | Resultado esperado | Resultado obtenido | Estado |
+|---|---|---|---|---|
+| P011 | Cajero intenta desactivar un cliente | Acceso denegado | HTTP 403 | Aprobada |
+| P012 | Cajero consulta clientes | Permite la consulta | HTTP 200 | Aprobada |
+| P013 | Depósito con monto cero | Operación rechazada | HTTP 400 | Aprobada |
+| P014 | Registrar cliente con DPI repetido | Operación rechazada | HTTP 409 | Aprobada |
+| P015 | Consultar cuentas sin sesión | Acceso denegado | HTTP 401 | Aprobada |
+
+Resultado global: **15/15 pruebas aprobadas**.
+
 ## Pruebas de interfaz (manuales)
 Ejecuta cada una en el navegador, marca el estado y adjunta captura en `docs/evidencias/`.
 

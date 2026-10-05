@@ -45,7 +45,9 @@
             <td class="num">
               <div class="row" style="justify-content:flex-end">
                 <button type="button" class="btn ghost sm" (click)="editar(c)">Editar</button>
-                <button type="button" class="btn sm" [class.danger]="c.activo" [class.ghost]="!c.activo" (click)="cambiarEstado(c)">{{ c.activo ? 'Desactivar' : 'Activar' }}</button>
+                @if (auth.esAdmin()) {
+                  <button type="button" class="btn sm" [class.danger]="c.activo" [class.ghost]="!c.activo" (click)="cambiarEstado(c)">{{ c.activo ? 'Desactivar' : 'Activar' }}</button>
+                }
               </div>
             </td>
           </tr>

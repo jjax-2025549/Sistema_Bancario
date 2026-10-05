@@ -1,6 +1,7 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Observable } from 'rxjs';
+import { AuthService } from '../core/auth.service';
 import { ApiService } from '../core/api.service';
 import { ToastService } from '../core/toast.service';
 import { Cliente, Resp, mensajeError } from '../core/models';
@@ -15,6 +16,7 @@ const vacio = () => ({ nombre: '', apellido: '', dpi: '', email: '', telefono: '
 export class Clientes implements OnInit {
   private api = inject(ApiService);
   private toast = inject(ToastService);
+  auth = inject(AuthService);
   lista = signal<Cliente[]>([]);
   q = '';
   filtroActivo = '';

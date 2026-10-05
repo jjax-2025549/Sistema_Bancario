@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, inject, signal } from '@angular/core';
+import { Injectable, computed, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, of, tap } from 'rxjs';
 import { LoginRes, Usuario } from './models';
@@ -12,6 +12,8 @@ export class AuthService {
   private http = inject(HttpClient);
   private router = inject(Router);
   usuario = signal<Usuario | null>(this.leerUsuario());
+
+  esAdmin = computed(() => this.usuario()?.rol === 'ADMIN');
 
   private leerUsuario(): Usuario | null {
     try { return JSON.parse(localStorage.getItem(K_USER) ?? 'null'); } catch { return null; }
