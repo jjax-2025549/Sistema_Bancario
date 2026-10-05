@@ -6,8 +6,6 @@
   <button type="button" class="btn" (click)="mostrarForm.set(!mostrarForm())">Crear cuenta</button>
 </div>
 
-@if (aviso(); as a) { <div class="alert" [class.error]="a.tipo === 'error'" [class.success]="a.tipo === 'success'" role="status">{{ a.texto }}</div> }
-
 @if (mostrarForm()) {
   <form class="card" #f="ngForm" (ngSubmit)="crear()">
     <h2>Nueva cuenta</h2>

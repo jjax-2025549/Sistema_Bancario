@@ -1,7 +1,7 @@
 <div class="page-head">
   <div>
-    <h1>Resumen de operaciones</h1>
-    <p>Vista general del sistema bancario simulado.</p>
+    <h1>{{ saludo }}, {{ nombre }}</h1>
+    <p>{{ hoy | date: 'dd/MM/yyyy' }} · Resumen de operaciones</p>
   </div>
 </div>
 
@@ -9,10 +9,10 @@
 
 @if (datos(); as d) {
   <section class="grid kpis" aria-label="Indicadores">
-    <div class="card kpi principal"><span>Saldo total en cuentas activas</span><strong>{{ d.totales.saldo_total | currency: 'GTQ' : 'symbol-narrow' }}</strong></div>
-    <div class="card kpi"><span>Clientes activos</span><strong>{{ d.totales.clientes_activos }}</strong></div>
-    <div class="card kpi"><span>Cuentas activas</span><strong>{{ d.totales.cuentas_activas }}</strong></div>
-    <div class="card kpi"><span>Movimientos registrados</span><strong>{{ d.totales.total_movimientos }}</strong></div>
+    <div class="card kpi principal"><span>Saldo total en cuentas activas</span><strong [appCountUp]="d.totales.saldo_total" [dinero]="true"></strong></div>
+    <div class="card kpi"><span>Clientes activos</span><strong [appCountUp]="d.totales.clientes_activos"></strong></div>
+    <div class="card kpi"><span>Cuentas activas</span><strong [appCountUp]="d.totales.cuentas_activas"></strong></div>
+    <div class="card kpi"><span>Movimientos registrados</span><strong [appCountUp]="d.totales.total_movimientos"></strong></div>
   </section>
 
   <section class="grid two">
@@ -57,4 +57,6 @@
       </table>
     </div>
   </section>
+} @else if (!error()) {
+  <section class="grid kpis" aria-label="Cargando"><div class="card skeleton"></div><div class="card skeleton"></div><div class="card skeleton"></div><div class="card skeleton"></div></section>
 }
