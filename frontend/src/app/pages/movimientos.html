@@ -27,7 +27,7 @@
     <div class="field"><label for="fd">Desde</label><input id="fd" type="date" [(ngModel)]="desde" (ngModelChange)="buscar()" /></div>
     <div class="field"><label for="fh">Hasta</label><input id="fh" type="date" [(ngModel)]="hasta" (ngModelChange)="buscar()" /></div>
   </div>
-  <div class="row" style="margin-bottom:12px"><button type="button" class="btn ghost sm" (click)="limpiar()">Limpiar filtros</button></div>
+  <div class="row" style="margin-bottom:12px"><button type="button" class="btn ghost sm" (click)="limpiar()">Limpiar filtros</button><button type="button" class="btn sm" (click)="exportar()" [disabled]="!lista().length">Exportar CSV</button><button type="button" class="btn ghost sm" (click)="imprimir()">Imprimir</button></div>
 
   @if (error()) { <div class="alert error">{{ error() }}</div> }
 
