@@ -2,7 +2,8 @@ import { Component, OnInit, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { ApiService } from '../core/api.service';
-import { Aviso, Cliente, Resp, mensajeError } from '../core/models';
+import { ToastService } from '../core/toast.service';
+import { Cliente, Resp, mensajeError } from '../core/models';
 
 const vacio = () => ({ nombre: '', apellido: '', dpi: '', email: '', telefono: '', direccion: '' });
 
@@ -13,8 +14,8 @@ const vacio = () => ({ nombre: '', apellido: '', dpi: '', email: '', telefono: '
 })
 export class Clientes implements OnInit {
   private api = inject(ApiService);
+  private toast = inject(ToastService);
   lista = signal<Cliente[]>([]);
-  aviso = signal<Aviso | null>(null);
   q = '';
   filtroActivo = '';
   mostrarForm = signal(false);
@@ -27,17 +28,16 @@ export class Clientes implements OnInit {
   cargar() {
     this.api.clientes(this.q, this.filtroActivo).subscribe({
       next: (r) => this.lista.set(r.datos),
-      error: (e) => this.aviso.set({ tipo: 'error', texto: mensajeError(e) }),
+      error: (e) => this.toast.show('error', mensajeError(e)),
     });
   }
 
-  nuevo() { this.editId = null; this.form = vacio(); this.mostrarForm.set(true); this.aviso.set(null); }
+  nuevo() { this.editId = null; this.form = vacio(); this.mostrarForm.set(true); }
 
   editar(c: Cliente) {
     this.editId = c.id;
     this.form = { nombre: c.nombre, apellido: c.apellido, dpi: c.dpi, email: c.email, telefono: c.telefono, direccion: c.direccion ?? '' };
     this.mostrarForm.set(true);
-    this.aviso.set(null);
   }
 
   cancelar() { this.mostrarForm.set(false); this.editId = null; }
@@ -47,12 +47,12 @@ export class Clientes implements OnInit {
     const peticion: Observable<Resp<unknown>> = this.editId ? this.api.actualizarCliente(this.editId, this.form) : this.api.crearCliente(this.form);
     peticion.subscribe({
       next: (r) => {
-        this.aviso.set({ tipo: 'success', texto: r.mensaje ?? 'Cliente guardado.' });
+        this.toast.show('success', r.mensaje ?? 'Cliente guardado.');
         this.guardando = false;
         this.mostrarForm.set(false);
         this.cargar();
       },
-      error: (e) => { this.aviso.set({ tipo: 'error', texto: mensajeError(e) }); this.guardando = false; },
+      error: (e) => { this.toast.show('error', mensajeError(e)); this.guardando = false; },
     });
   }
 
@@ -60,8 +60,8 @@ export class Clientes implements OnInit {
     if (c.activo && !confirm(`¿Desactivar a ${c.nombre} ${c.apellido}? Sus cuentas también quedarán inactivas.`)) return;
     const obs = c.activo ? this.api.desactivarCliente(c.id) : this.api.activarCliente(c.id);
     obs.subscribe({
-      next: (r) => { this.aviso.set({ tipo: 'success', texto: r.mensaje ?? 'Estado actualizado.' }); this.cargar(); },
-      error: (e) => this.aviso.set({ tipo: 'error', texto: mensajeError(e) }),
+      next: (r) => { this.toast.show('success', r.mensaje ?? 'Estado actualizado.'); this.cargar(); },
+      error: (e) => this.toast.show('error', mensajeError(e)),
     });
   }
 }
