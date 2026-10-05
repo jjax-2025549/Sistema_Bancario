@@ -7,7 +7,7 @@ Sistema bancario **educativo** (solo datos ficticios) que gestiona clientes, cue
 | Dato | Información |
 |---|---|
 | Autor | Julian Eligio Jax Cisneros (carné 2025549) |
-| Repositorio | https://github.com/jjax-205549/Sistema_Bancario |
+| Repositorio | https://github.com/jjax-2025549/Sistema_Bancario |
 | Rama de trabajo | `ft-jjax-2025549` → `develop` → `main` |
 | Docente / equipo | ver [`docs/00-plan-y-roles.md`](docs/00-plan-y-roles.md) |
 
@@ -59,6 +59,14 @@ Ejecuta en MySQL Workbench, en este orden: `database/01_estructura.sql` y `datab
 | `admin` | `Admin123` | ADMIN |
 | `cajero1` | `Cajero123` | CAJERO |
 
+## Roles y permisos
+| Acción | ADMIN | CAJERO |
+|---|---|---|
+| Clientes, cuentas, operaciones, movimientos y reportes | Sí | Sí |
+| Desactivar/activar clientes y cuentas | Sí | No |
+
+La restricción se aplica en el backend (respuesta 403) y la interfaz oculta esos botones al cajero.
+
 Cuentas de ejemplo: `100-0000001`, `100-0000002` (activas) y `100-0000003` (inactiva, sirve para la prueba P010).
 
 ## Variables de entorno (`backend/.env`)
@@ -77,7 +85,7 @@ Cuentas de ejemplo: `100-0000001`, `100-0000002` (activas) y `100-0000003` (inac
 cd backend
 pnpm test:api
 ```
-Ejecuta P001–P010 y muestra el resumen. Además, importa `postman/Sistema_Bancario.postman_collection.json` en Postman y ejecuta la colección en orden. Ver [`docs/09-matriz-de-pruebas.md`](docs/09-matriz-de-pruebas.md).
+Ejecuta P001–P010 (obligatorias) y P011–P015 (roles y validaciones) y muestra el resumen. Además, importa `postman/Sistema_Bancario.postman_collection.json` en Postman y ejecuta la colección en orden. Ver [`docs/09-matriz-de-pruebas.md`](docs/09-matriz-de-pruebas.md).
 
 ## Apariencia (claro / oscuro / automático)
 Botón **Apariencia** (barra superior y login):

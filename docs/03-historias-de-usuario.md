@@ -17,3 +17,5 @@
 | HU13 | Como cajero, quiero buscar clientes y cuentas para consultar su saldo rápidamente. | La búsqueda muestra resultados y el detalle con movimientos. | Manual |
 | HU14 | Como administrador, quiero ver un reporte resumen para conocer la actividad del banco. | Se muestran totales, montos por tipo y actividad de 7 días. | Manual |
 | HU15 | Como usuario, quiero cambiar entre modo claro, oscuro o automático para trabajar cómodo a cualquier hora. | El modo automático cambia según la hora y la preferencia se recuerda. | Manual |
+| HU16 | Como administrador, quiero que solo yo pueda desactivar clientes y cuentas para evitar cambios no autorizados. | Un cajero recibe 403 y no ve los botones de desactivar. | P011, P012 |
+| HU17 | Como cajero, quiero exportar los movimientos a CSV para llevar el historial a una hoja de cálculo. | Se descarga un archivo con los movimientos filtrados. | Manual |

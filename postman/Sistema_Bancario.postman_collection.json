@@ -1300,6 +1300,137 @@
           ]
         }
       ]
+    },
+    {
+      "name": "6. Control de acceso por rol (ejecutar al final)",
+      "item": [
+        {
+          "name": "P011a Login como cajero",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "auth": {
+              "type": "noauth"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"cajero1\",\n  \"password\": \"Cajero123\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Estado HTTP 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.collectionVariables.set(\"token\", pm.response.json().token);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "P011 Cajero intenta desactivar cliente (403)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/clientes/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "clientes",
+                "1"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Estado HTTP 403\", function () { pm.response.to.have.status(403); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "P012 Cajero consulta clientes (200)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/clientes",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "clientes"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Estado HTTP 200\", function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
     }
   ],
   "variable": [

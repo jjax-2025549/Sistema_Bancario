@@ -219,3 +219,17 @@ tbody tr:hover { background: var(--surface-2); }
 @keyframes shake { 20%, 60% { transform: translateX(-6px); } 40%, 80% { transform: translateX(6px); } }
 @keyframes slide-in { from { opacity: 0; transform: translateX(24px); } to { opacity: 1; transform: none; } }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; } }
+
+/* Credenciales de prueba en el login */
+.creds { border: 1px dashed var(--border); background: var(--surface); border-radius: var(--radius); padding: 12px; display: grid; gap: 8px; }
+.creds-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; flex-wrap: wrap; font-size: .82rem; font-weight: 600; }
+.creds-head small { color: var(--muted); font-weight: 400; font-size: .76rem; }
+.cred { display: flex; align-items: center; gap: 10px; width: 100%; text-align: left; font: inherit; color: var(--text); background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 8px 10px; cursor: pointer; transition: border-color .15s, background-color .15s, transform .1s; }
+.cred:hover { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 8%, var(--surface-2)); }
+.cred:active { transform: scale(.985); }
+.cred-rol { font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: var(--accent); min-width: 92px; }
+.cred-data { flex: 1; font-size: .9rem; }
+.cred-use { font-size: .78rem; font-weight: 600; color: var(--accent); }
+
+/* Impresión: solo el contenido de la página */
+@media print { .side, .topbar, .toasts, .page-head button, .row button, .tabs { display: none !important; } .shell { display: block; } body { background: #fff; color: #000; } .card { box-shadow: none; } .content { padding: 0; max-width: none; } }

@@ -47,3 +47,13 @@ Authorization: Bearer <token>
 ```
 
 La colección lista para importar está en `postman/Sistema_Bancario.postman_collection.json`.
+
+## Permisos por rol
+| Acción | ADMIN | CAJERO |
+|---|---|---|
+| Consultar clientes, cuentas, movimientos y reportes | Sí | Sí |
+| Registrar y modificar clientes | Sí | Sí |
+| Crear cuentas | Sí | Sí |
+| Depósitos, retiros y transferencias | Sí | Sí |
+| Desactivar o activar clientes (`DELETE /clientes/:id`, `PATCH /clientes/:id/activar`) | Sí | No (403) |
+| Cambiar estado o tipo de una cuenta (`PUT/PATCH /cuentas/:id`) | Sí | No (403) |
