@@ -17,6 +17,7 @@ export class Login {
   password = '';
   error = signal('');
   cargando = signal(false);
+  mostrar = signal(false);
 
   constructor() {
     if (this.auth.autenticado) this.router.navigate(['/resumen']);
@@ -25,7 +26,7 @@ export class Login {
   entrar() {
     this.error.set('');
     this.cargando.set(true);
-    this.auth.login(this.username, this.password).subscribe({
+    this.auth.login(this.username.trim(), this.password).subscribe({
       next: () => this.router.navigate(['/resumen']),
       error: (e) => { this.error.set(mensajeError(e)); this.cargando.set(false); },
     });
