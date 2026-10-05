@@ -54,7 +54,9 @@
             <td>
               <div class="row" style="justify-content:flex-end">
                 <a class="btn ghost sm" style="text-decoration:none" routerLink="/movimientos" [queryParams]="{ cuenta: c.id }">Movimientos</a>
-                <button type="button" class="btn ghost sm" (click)="cambiarEstado(c)">{{ c.estado === 'ACTIVA' ? 'Desactivar' : 'Activar' }}</button>
+                @if (auth.esAdmin()) {
+                  <button type="button" class="btn ghost sm" (click)="cambiarEstado(c)">{{ c.estado === 'ACTIVA' ? 'Desactivar' : 'Activar' }}</button>
+                }
               </div>
             </td>
           </tr>
