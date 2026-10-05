@@ -1,16 +1,22 @@
 import { CurrencyPipe, DatePipe } from '@angular/common';
 import { Component, OnInit, inject, signal } from '@angular/core';
+import { AuthService } from '../core/auth.service';
+import { CountUp } from '../shared/count-up';
 import { ApiService } from '../core/api.service';
 import { ResumenData, mensajeError } from '../core/models';
 import { TipoMovPipe } from '../shared/tipo.pipe';
 
 @Component({
   selector: 'app-resumen',
-  imports: [CurrencyPipe, DatePipe, TipoMovPipe],
+  imports: [CurrencyPipe, DatePipe, TipoMovPipe, CountUp],
   templateUrl: './resumen.html',
 })
 export class Resumen implements OnInit {
   private api = inject(ApiService);
+  private auth = inject(AuthService);
+  nombre = (this.auth.usuario()?.nombre ?? '').split(' ')[0];
+  saludo = (() => { const h = new Date().getHours(); return h < 12 ? 'Buenos días' : h < 19 ? 'Buenas tardes' : 'Buenas noches'; })();
+  hoy = new Date();
   datos = signal<ResumenData | null>(null);
   error = signal('');
 
