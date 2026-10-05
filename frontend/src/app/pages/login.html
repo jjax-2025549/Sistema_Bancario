@@ -1,29 +1,49 @@
 <div class="login-wrap">
   <section class="login-art">
-    <h1>Sistema bancario académico</h1>
-    <p>Clientes, cuentas y operaciones simuladas. Todo el contenido es ficticio y con fines educativos.</p>
+    <div class="brand light"><div class="brand-mark" aria-hidden="true">B</div><b>Banco Académico</b></div>
+    <div class="art-body">
+      <h1>Tu banco, simulado con precisión.</h1>
+      <p>Gestiona clientes, cuentas y operaciones con validaciones reales y trazabilidad completa de cada movimiento.</p>
+      <ul class="feats">
+        <li><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.2 8.3-8 9-4.8-.7-8-4.5-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg></span><div><b>Operaciones seguras</b><small>Transacciones atómicas que cuidan cada saldo.</small></div></li>
+        <li><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg></span><div><b>Reportes en tiempo real</b><small>Resumen de actividad y montos por tipo.</small></div></li>
+        <li><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M5 19l1.5-1.5M17.5 6.5L19 5"/></svg></span><div><b>Tema a tu medida</b><small>Claro, oscuro o automático según la hora.</small></div></li>
+      </ul>
+    </div>
+    <small class="art-foot">Proyecto Integrador · Taller 2 · Fundación Kinal</small>
   </section>
+
   <section class="login-box">
     <div class="theme-pos"><app-theme-selector /></div>
-    <div>
-      <h1>Iniciar sesión</h1>
-      <p class="muted">Ingresa con una credencial ficticia.</p>
-    </div>
-    <form #f="ngForm" (ngSubmit)="entrar()" class="grid">
-      <div class="field">
-        <label for="usuario">Usuario</label>
-        <input id="usuario" name="username" [(ngModel)]="username" required autocomplete="username" />
+    <div class="login-card">
+      <div>
+        <h2 class="welcome">Bienvenido de nuevo</h2>
+        <p class="muted">Ingresa tus datos para acceder al sistema.</p>
       </div>
-      <div class="field">
-        <label for="clave">Contraseña</label>
-        <input id="clave" name="password" type="password" [(ngModel)]="password" required autocomplete="current-password" />
-      </div>
-      @if (error()) { <div class="alert error" role="alert">{{ error() }}</div> }
-      <button class="btn" type="submit" [disabled]="f.invalid || cargando()">{{ cargando() ? 'Ingresando…' : 'Ingresar' }}</button>
-    </form>
-    <div class="creds">
-      Credenciales ficticias de prueba:<br />
-      <b>admin</b> / Admin123 &nbsp;·&nbsp; <b>cajero1</b> / Cajero123
+      <form #f="ngForm" (ngSubmit)="entrar()" class="grid" autocomplete="on">
+        <div class="field">
+          <label for="usuario">Usuario</label>
+          <div class="input-ico">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+            <input id="usuario" name="username" [(ngModel)]="username" required autocomplete="username" placeholder="Tu usuario" />
+          </div>
+        </div>
+        <div class="field">
+          <label for="clave">Contraseña</label>
+          <div class="input-ico">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+            <input id="clave" name="password" [type]="mostrar() ? 'text' : 'password'" [(ngModel)]="password" required autocomplete="current-password" placeholder="Tu contraseña" />
+            <button type="button" class="eye" (click)="mostrar.set(!mostrar())" [attr.aria-label]="mostrar() ? 'Ocultar contraseña' : 'Mostrar contraseña'" [attr.aria-pressed]="mostrar()">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>@if (mostrar()) {<path d="M3 3l18 18"/>}</svg>
+            </button>
+          </div>
+        </div>
+        @if (error()) { <div class="alert error shake" role="alert">{{ error() }}</div> }
+        <button class="btn block" type="submit" [disabled]="f.invalid || cargando()">
+          @if (cargando()) { <span class="spin" aria-hidden="true"></span> Ingresando… } @else { Ingresar }
+        </button>
+      </form>
+      <p class="login-note">Entorno educativo · Datos ficticios</p>
     </div>
   </section>
 </div>
