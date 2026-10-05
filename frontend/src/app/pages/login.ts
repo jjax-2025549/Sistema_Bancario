@@ -18,6 +18,17 @@ export class Login {
   error = signal('');
   cargando = signal(false);
   mostrar = signal(false);
+  // Credenciales ficticias de prueba (solo con fines educativos)
+  credenciales = [
+    { rol: 'Administrador', usuario: 'admin', clave: 'Admin123' },
+    { rol: 'Cajero', usuario: 'cajero1', clave: 'Cajero123' },
+  ];
+
+  usar(c: { usuario: string; clave: string }) {
+    this.username = c.usuario;
+    this.password = c.clave;
+    this.error.set('');
+  }
 
   constructor() {
     if (this.auth.autenticado) this.router.navigate(['/resumen']);
