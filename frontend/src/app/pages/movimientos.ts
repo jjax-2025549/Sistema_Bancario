@@ -2,6 +2,7 @@ import { CurrencyPipe, DatePipe } from '@angular/common';
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { ToastService } from '../core/toast.service';
 import { ApiService } from '../core/api.service';
 import { Cuenta, Movimiento, mensajeError } from '../core/models';
 import { TipoMovPipe, esEntrada } from '../shared/tipo.pipe';
@@ -14,6 +15,7 @@ import { TipoMovPipe, esEntrada } from '../shared/tipo.pipe';
 export class Movimientos implements OnInit {
   private api = inject(ApiService);
   private ruta = inject(ActivatedRoute);
+  private toast = inject(ToastService);
   lista = signal<Movimiento[]>([]);
   cuentas = signal<Cuenta[]>([]);
   error = signal('');
@@ -36,6 +38,21 @@ export class Movimientos implements OnInit {
       error: (e) => this.error.set(mensajeError(e)),
     });
   }
+
+  exportar() {
+    const q = (v: unknown) => `"${String(v ?? '').replace(/"/g, '""')}"`;
+    const enc = ['Fecha', 'Cuenta', 'Tipo', 'Cuenta relacionada', 'Monto', 'Saldo resultante', 'Usuario', 'Descripción'];
+    const filas = this.lista().map((m) => [new Date(m.fecha).toLocaleString('es-GT'), m.cuenta, m.tipo, m.cuenta_relacionada ?? '', m.monto, m.saldo_resultante, m.usuario, m.descripcion ?? ''].map(q).join(','));
+    const blob = new Blob(['\ufeff' + [enc.map(q).join(','), ...filas].join('\n')], { type: 'text/csv;charset=utf-8' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `movimientos_${new Date().toISOString().slice(0, 10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(a.href);
+    this.toast.show('success', `Se exportaron ${filas.length} movimientos a CSV.`);
+  }
+
+  imprimir() { window.print(); }
 
   limpiar() { this.cuentaId = null; this.tipo = ''; this.desde = ''; this.hasta = ''; this.buscar(); }
 }
